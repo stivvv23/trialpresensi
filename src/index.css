@@ -1,0 +1,30 @@
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  font-family:Arial,sans-serif;
+  background:#f4f7fb;
+}
+
+.header{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:10px 20px;
+}
+
+.logo-sekolah{
+  width:150px;
+  height:140px;
+  object-fit:contain;
+}
+
+.logo-osis{
+  width:150px;
+  height:140px;
+  object-fit:cover;
+  border-radius:50%;
+}

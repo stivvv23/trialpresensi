@@ -1,0 +1,19 @@
+.page{
+  min-height:100vh;
+  padding:30px;
+  background:#09da0261;
+}
+
+.back-btn{
+  text-decoration:none;
+  color:#2563eb;
+  font-weight:bold;
+}
+
+.presensi-card{
+  background:white;
+  padding:20px;
+  border-radius:15px;
+  margin-bottom:15px;
+  box-shadow:0 2px 10px rgba(0,0,0,.08);
+}

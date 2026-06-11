@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Uji Coba Presensi Siswa</title>
+
+  <style>
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px 20px;
+    }
+
+    .logo-sekolah {
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+    }
+
+    .logo-osis {
+      width: 80px;
+      height: 80px;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="header">
+    <img src="src/assets/logopinus.png" class="logo-sekolah" alt="Logo Sekolah">
+    <img src="src/assets/hero.png" class="logo-osis" alt="Logo OSIS">
+  </div>
+
+  <div id="root"></div>
+
+  <footer>
+    <div style="padding:15px 0;text-align:center;background-color:#545353;color:white;">
+      © 2026 ORSE PKBM PINUS - All Rights Reserved
+    </div>
+  </footer>
+
+  <script type="module" src="/src/main.jsx"></script>
+
+</body>
+</html>
