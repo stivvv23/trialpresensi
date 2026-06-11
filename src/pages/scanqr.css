@@ -3,11 +3,23 @@
   font-family: Arial, sans-serif;
 }
 
+h1 {
+  margin-bottom: 10px;
+}
+
+.back-btn {
+  display: inline-block;
+  margin-bottom: 10px;
+  text-decoration: none;
+  color: blue;
+}
+
 .scanner-card {
-  margin-top: 20px;
+  margin-top: 10px;
   padding: 10px;
   border: 2px solid #ddd;
   border-radius: 10px;
+  background: #fff;
 }
 
 .form-card {
@@ -18,6 +30,10 @@
   display: flex;
   flex-direction: column;
   gap: 10px;
+}
+
+.form-card h3 {
+  margin: 0;
 }
 
 .form-card select,
@@ -36,6 +52,7 @@
   cursor: pointer;
 }
 
-.form-card button:hover {
-  background: #218838;
+.form-card button:disabled {
+  background: gray;
+  cursor: not-allowed;
 }
