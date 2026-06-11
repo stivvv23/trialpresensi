@@ -12,6 +12,32 @@ export default function ScanQR() {
   const [atribut, setAtribut] = useState(null)
   const [foto, setFoto] = useState(null)
 
+  function startScanner() {
+
+    scannerRef.current = new Html5QrcodeScanner(
+      "reader",
+      { fps: 10, qrbox: 250 },
+      false
+    )
+
+    scannerRef.current.render(
+      (decodedText) => {
+
+        scannerRef.current.clear()
+
+        let qrToken = decodedText
+
+        try {
+          const url = new URL(decodedText)
+          qrToken = url.searchParams.get("token") || decodedText
+        } catch (e) {}
+
+        handleAbsen(qrToken)
+      },
+      () => {}
+    )
+  }
+
   async function handleAbsen(qrToken) {
 
     const { data, error } = await supabase
@@ -22,6 +48,7 @@ export default function ScanQR() {
 
     if (error || !data) {
       alert("Siswa tidak ditemukan")
+      startScanner()
       return
     }
 
@@ -64,41 +91,20 @@ export default function ScanQR() {
     setSiswa(null)
     setAtribut(null)
     setFoto(null)
+
+    setTimeout(() => {
+      startScanner()
+    }, 500)
   }
 
   useEffect(() => {
-
-    scannerRef.current = new Html5QrcodeScanner(
-      "reader",
-      { fps: 10, qrbox: 250 },
-      false
-    )
-
-    scannerRef.current.render(
-
-      (decodedText) => {
-
-        scannerRef.current.clear()
-
-        let qrToken = decodedText
-
-        try {
-          const url = new URL(decodedText)
-          qrToken = url.searchParams.get("token") || decodedText
-        } catch (e) {}
-
-        handleAbsen(qrToken)
-      },
-
-      () => {}
-    )
+    startScanner()
 
     return () => {
       if (scannerRef.current) {
         scannerRef.current.clear()
       }
     }
-
   }, [])
 
   return (
@@ -114,14 +120,12 @@ export default function ScanQR() {
         <div id="reader"></div>
       </div>
 
-      {/* FORM ABSEN */}
       {siswa && (
         <div className="form-card">
 
           <h3>{siswa.nama}</h3>
           <p>{siswa.kelas}</p>
 
-          {/* ATRIBUT */}
           <select
             value={atribut === true ? "ya" : atribut === false ? "tidak" : ""}
             onChange={(e) => setAtribut(e.target.value === "ya")}
@@ -131,7 +135,6 @@ export default function ScanQR() {
             <option value="tidak">Tidak</option>
           </select>
 
-          {/* FOTO */}
           <input
             type="file"
             accept="image/*"
