@@ -1,80 +1,68 @@
-import { useEffect, useRef } from "react"
+import { useState, useEffect, useRef } from "react"
 import { Html5QrcodeScanner } from "html5-qrcode"
 import { supabase } from "../supabaseClient"
 import { Link } from "react-router-dom"
-
 import "./scanqr.css"
 
 export default function ScanQR() {
 
   const scannerRef = useRef(null)
 
+  const [siswa, setSiswa] = useState(null)
+  const [atribut, setAtribut] = useState("")
+  const [foto, setFoto] = useState(null)
+
   async function handleAbsen(qrToken) {
 
-    const { data: siswa } = await supabase
+    const { data, error } = await supabase
       .from("siswa")
       .select()
       .eq("qr_token", qrToken)
       .single()
 
-    if (!siswa) {
+    if (error || !data) {
       alert("Siswa tidak ditemukan")
       return
     }
 
-    navigator.geolocation.getCurrentPosition(
+    setSiswa(data)
+  }
 
-      async (pos) => {
+  async function submitAbsen() {
 
-        const latitude = pos.coords.latitude
-        const longitude = pos.coords.longitude
+    if (!siswa) return
 
-        const jam = new Date().getHours()
+    const waktu = new Date().toISOString()
 
-        const status =
-          jam <= 7 ? "Hadir" : "Telat"
-
-        const { error } = await supabase
-          .from("presensi")
-          .insert([
-            {
-              siswa_id: siswa.id,
-              latitude,
-              longitude,
-              status,
-              atribut_lengkap: true
-            }
-          ])
-
-        if (error) {
-          alert(error.message)
-          return
+    const { error } = await supabase
+      .from("presensi")
+      .insert([
+        {
+          siswa_id: siswa.id,
+          atribut_lengkap: atribut,
+          waktu: waktu
         }
+      ])
 
-        alert(
-          `${siswa.nama} berhasil absen (${status})`
-        )
+    if (error) {
+      alert(error.message)
+      return
+    }
 
-      },
+    alert("Absen berhasil")
 
-      () => {
-        alert("GPS tidak diizinkan")
-      }
-
-    )
+    setSiswa(null)
+    setAtribut("")
+    setFoto(null)
   }
 
   useEffect(() => {
 
-    scannerRef.current =
-      new Html5QrcodeScanner(
-        "reader",
-        {
-          fps: 10,
-          qrbox: 250
-        },
-        false
-      )
+    scannerRef.current = new Html5QrcodeScanner(
+      "reader",
+      { fps: 10, qrbox: 250 },
+      false
+    )
 
     scannerRef.current.render(
 
@@ -87,16 +75,12 @@ export default function ScanQR() {
         try {
           const url = new URL(decodedText)
           qrToken = url.searchParams.get("token") || decodedText
-        } catch (e) {
-          qrToken = decodedText
-        }
+        } catch (e) {}
 
-handleAbsen(qrToken)
-
+        handleAbsen(qrToken)
       },
 
       () => {}
-
     )
 
     return () => {
@@ -117,10 +101,41 @@ handleAbsen(qrToken)
       <h1>Scan Presensi</h1>
 
       <div className="scanner-card">
-
         <div id="reader"></div>
-
       </div>
+
+      {/* FORM ABSEN */}
+      {siswa && (
+        <div className="form-card">
+
+          <h3>{siswa.nama}</h3>
+          <p>{siswa.kelas}</p>
+
+          {/* ATRIBUT */}
+          <select
+            value={atribut}
+            onChange={(e) => setAtribut(e.target.value)}
+          >
+            <option value="">Pilih Atribut Lengkap</option>
+            <option value="ya">Ya</option>
+            <option value="tidak">Tidak</option>
+          </select>
+
+          {/* FOTO */}
+          <input
+            type="file"
+            accept="image/*"
+            capture="camera"
+            onChange={(e) => setFoto(e.target.files[0])}
+          />
+
+          {/* BUTTON */}
+          <button onClick={submitAbsen}>
+            Submit Absen
+          </button>
+
+        </div>
+      )}
 
     </div>
   )
