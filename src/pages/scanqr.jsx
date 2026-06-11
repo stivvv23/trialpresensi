@@ -32,6 +32,16 @@ export default function ScanQR() {
 
     if (!siswa) return
 
+    if (atribut === null) {
+      alert("Pilih atribut dulu")
+      return
+    }
+
+    if (!foto) {
+      alert("Ambil foto dulu")
+      return
+    }
+
     const waktu = new Date().toISOString()
 
     const { error } = await supabase
@@ -52,7 +62,7 @@ export default function ScanQR() {
     alert("Absen berhasil")
 
     setSiswa(null)
-    setAtribut("")
+    setAtribut(null)
     setFoto(null)
   }
 
@@ -113,12 +123,12 @@ export default function ScanQR() {
 
           {/* ATRIBUT */}
           <select
-          value={atribut === true ? "ya" : atribut === false ? "tidak" : ""}
-          onChange={(e) => setAtribut(e.target.value === "ya")}
-           >
-          <option value="">Pilih Atribut</option>
-          <option value="ya">Ya</option>
-          <option value="tidak">Tidak</option>
+            value={atribut === true ? "ya" : atribut === false ? "tidak" : ""}
+            onChange={(e) => setAtribut(e.target.value === "ya")}
+          >
+            <option value="">Pilih Atribut</option>
+            <option value="ya">Ya</option>
+            <option value="tidak">Tidak</option>
           </select>
 
           {/* FOTO */}
@@ -129,8 +139,10 @@ export default function ScanQR() {
             onChange={(e) => setFoto(e.target.files[0])}
           />
 
-          {/* BUTTON */}
-          <button onClick={submitAbsen}>
+          <button
+            onClick={submitAbsen}
+            disabled={!atribut || !foto}
+          >
             Submit Absen
           </button>
 
