@@ -9,7 +9,7 @@ export default function ScanQR() {
   const scannerRef = useRef(null)
 
   const [siswa, setSiswa] = useState(null)
-  const [atribut, setAtribut] = useState("")
+  const [atribut, setAtribut] = useState(null)
   const [foto, setFoto] = useState(null)
 
   async function handleAbsen(qrToken) {
@@ -113,12 +113,12 @@ export default function ScanQR() {
 
           {/* ATRIBUT */}
           <select
-            value={atribut}
-            onChange={(e) => setAtribut(e.target.value)}
-          >
-            <option value="">Pilih Atribut Lengkap</option>
-            <option value="ya">Ya</option>
-            <option value="tidak">Tidak</option>
+          value={atribut === true ? "ya" : atribut === false ? "tidak" : ""}
+          onChange={(e) => setAtribut(e.target.value === "ya")}
+           >
+          <option value="">Pilih Atribut</option>
+          <option value="ya">Ya</option>
+          <option value="tidak">Tidak</option>
           </select>
 
           {/* FOTO */}
