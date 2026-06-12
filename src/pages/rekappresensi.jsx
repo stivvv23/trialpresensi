@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react"
 import { supabase } from "../supabaseClient"
 import { Link } from "react-router-dom"
-
 import "./rekappresensi.css"
 
 export default function RekapPresensi() {
@@ -10,16 +9,18 @@ export default function RekapPresensi() {
 
   async function getPresensi() {
 
-    const { data } = await supabase
+    const { data, error } = await supabase
       .from("presensi")
-      .select(`
-        *,
-        siswa (
-          nama,
-          kelas
-        )
-      `)
-      .order("waktu", { ascending:false })
+      .select("*")
+      .order("waktu", { ascending: false })
+
+    console.log("DATA:", data)
+    console.log("ERROR:", error)
+
+    if (error) {
+      alert(error.message)
+      return
+    }
 
     setPresensi(data || [])
   }
@@ -37,26 +38,34 @@ export default function RekapPresensi() {
 
       <h1>Rekap Presensi</h1>
 
-      {presensi.map((item) => (
+      {presensi.length === 0 ? (
+        <p>Belum ada data presensi</p>
+      ) : (
+        presensi.map((item) => (
+          <div
+            key={item.id}
+            className="presensi-card"
+          >
+            <h3>ID Siswa: {item.siswa_id}</h3>
 
-        <div
-          key={item.id}
-          className="presensi-card"
-        >
+            <p>Status: {item.status || "-"}</p>
 
-          <h3>{item.siswa?.nama}</h3>
+            <p>
+              Waktu:
+              {" "}
+              {item.waktu
+                ? new Date(item.waktu).toLocaleString("id-ID")
+                : "-"}
+            </p>
 
-          <p>{item.siswa?.kelas}</p>
-
-          <p>Status : {item.status}</p>
-
-          <p>
-            {new Date(item.waktu).toLocaleString()}
-          </p>
-
-        </div>
-
-      ))}
+            <p>
+              Atribut:
+              {" "}
+              {String(item.atribut_lengkap)}
+            </p>
+          </div>
+        ))
+      )}
 
     </div>
   )
