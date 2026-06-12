@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom"
 import "./dashboard.css"
-import { Analytics } from "@vercel/analytics/next"
 
 export default function Dashboard() {
 
