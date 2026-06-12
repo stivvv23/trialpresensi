@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 import { QRCodeCanvas } from "qrcode.react"
 import { supabase } from "../supabaseClient"
 import { Link } from "react-router-dom"
-
+import { Analytics } from "@vercel/analytics/next"
 import "./datasiswa.css"
 
 export default function DataSiswa() {
