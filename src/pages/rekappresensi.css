@@ -1,19 +1,44 @@
-.page{
-  min-height:100vh;
-  padding:30px;
-  background:#09da0261;
+.page {
+  min-height: 100vh;
+  padding: 30px;
+  background: #09da0261;
 }
 
-.back-btn{
-  text-decoration:none;
-  color:#2563eb;
-  font-weight:bold;
+.back-btn {
+  text-decoration: none;
+  color: #2563eb;
+  font-weight: bold;
+  display: inline-block;
+  margin-bottom: 20px;
 }
 
-.presensi-card{
-  background:white;
-  padding:20px;
-  border-radius:15px;
-  margin-bottom:15px;
-  box-shadow:0 2px 10px rgba(0,0,0,.08);
+.page h1 {
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.presensi-card {
+  background: white;
+  padding: 20px;
+  border-radius: 15px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+}
+
+.presensi-card h3 {
+  margin: 0 0 10px;
+  color: #111827;
+}
+
+.presensi-card p {
+  margin: 5px 0;
+  color: #4b5563;
+}
+
+.kosong {
+  text-align: center;
+  background: white;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
 }
